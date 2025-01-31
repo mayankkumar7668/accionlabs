@@ -1,0 +1,76 @@
+Build a Deployment Pipeline
+Set up a streamlined build and deployment pipeline for the nginx application using GitHub Actions or an
+equivalent CI/CD tool. Ensure the pipeline covers building the Docker image, running security checks, and
+deploying to a Kubernetes cluster. (using Jenkins and not github actions)
+
+# I am using Jenkins #
+
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_IMAGE = "docker image of choosing"
+        K8S_NAMESPACE = "kubernetes namespace"
+        K8S_DEPLOYMENT = "kubernetes deployment yaml path"
+    }
+
+    stages {
+        stage ('Checkout') {
+            steps {
+                git branch: 'master', url: 'git repo url'
+            }
+        }
+
+        stage ('Build') {
+            steps {
+                script {
+                    sh "docker build -t ${DOCKER_IMAGE} ."
+                }
+            }
+        }
+
+        stage ('Scan') {
+            steps {
+                script {
+                    sh (command to run the scanning tool for image scan, can be any tool like trivy, etc)
+                }
+            }
+        }
+
+        stage ('Push') {
+            steps {
+                script {
+                    withCredentials(credentialsId: 'dockerhubcreds', variable: 'PASSWORD') {
+                        sh "echo $PASSWORD | docker login -u docker_username --password-stdin"
+                        sh "docker push ${DOCKER_IMAGE}
+                    }
+                }
+            }
+        }
+
+        stage ('Deployment') {
+            steps {
+                script {
+                    sh "kubectl apply -f ${K8S_DEPLOYMENT} --namespace ${K8S_NAMESPACE}"
+                }
+            }
+        }
+
+        stage ('Verify') {
+            steps {
+                script {
+                    sh "kubectl get pods -n ${K8S_NAMESPACE}"
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Deployed successfully"
+        }
+        failure {
+            echo "Deployment failed. Check the logs"
+        }
+    }
+}

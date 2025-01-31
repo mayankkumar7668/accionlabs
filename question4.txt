@@ -1,0 +1,9 @@
+Text Manipulation Problem
+Choose or create a text manipulation problem that involves using awk, sed, tr, and/or grep. Solve the problem,
+considering efficiency and readability.
+
+We can use the commands in various ways as listed below:
+
+a. grep "ERROR: Failed login" server.log
+b. grep "ERROR: Failed login" server.log | awk -F"'" '{print $2, $4}'
+c. grep "ERROR: Failed login" server.log | awk -F"'" '{print $2}' | sort | uniq -c

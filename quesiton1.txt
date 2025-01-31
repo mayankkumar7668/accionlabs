@@ -1,0 +1,19 @@
+Dockerfile for nginx 1.19
+Write a Dockerfile to run nginx version 1.19 in a container. Choose a base image, considering security best
+practices, and aim for the image to pass a container image security test
+
+FROM nginx:1.19-alpine
+
+RUN addgroup -S nginx
+RUN adduser -S nginx -g nginx
+
+# assuming we have certain configs in the current folder
+COPY . /etc/nginx/.
+
+RUN chown -R nginx:nginx /var/log/nginx /var/cache/nginx
+
+WORKDIR /usr/share/nginx/html
+
+EXPOSE 443
+
+CMD ["nginx", "-g", "daemon off;"]

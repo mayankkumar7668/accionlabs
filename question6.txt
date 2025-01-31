@@ -1,0 +1,18 @@
+Sum of Even Fibonacci Numbers
+Write a program in a Object Orientated Programming language of your choice to calculate the sum of the first
+100 even-valued Fibonacci numbers. Consider efficiency and demonstrate good coding practices. (using python)
+
+# I am using Python #
+
+def sum_even_fibonacci(limit=100):
+    even_fibs = []
+    # taking first 2 even Fibonacci numbers
+    a, b = 2, 8
+
+    while len(even_fibs) < limit:
+        even_fibs.append(a)
+        a, b = b, 4 * b + a
+    
+    return sum(even_fibs)
+
+print("sum of first 100 even Fibonacci numbers: ", sum_even_fibonacci())

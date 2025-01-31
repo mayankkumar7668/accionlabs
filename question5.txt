@@ -1,0 +1,5 @@
+Text Manipulation with an Object Orientated Programming Language
+Solve the text manipulation problem from the previous question using any Object Orientated Programming
+language of your choice. Provide a clear and well-documented solution. (using python)
+
+# I am using Python #
